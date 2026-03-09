@@ -1,10 +1,23 @@
+//d
+ 
+import { spawn } from "node:child_process";
+
 const execCommand = () => {
-  // Write your code here
-  // Take command from CLI argument
-  // Spawn child process
-  // Pipe child stdout/stderr to parent stdout/stderr
-  // Pass environment variables
-  // Exit with same code as child
+  const [,, cmd, ...args] = process.argv;
+
+  if (!cmd) {
+    console.error("Usage: node script.js <command> [args...]");
+    process.exit(1);
+  }
+
+  const child = spawn(cmd, args, {
+    env: process.env,
+    stdio: "inherit"    
+  });
+
+  child.on("exit", (code) => {
+    process.exit(code);
+  });
 };
 
 execCommand();
